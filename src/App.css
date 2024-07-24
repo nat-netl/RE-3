@@ -1,45 +1,28 @@
+:root {
+  --tg-theme-bg-color: #000000;
+  --tg-theme-text-color: #ffffff;
+  --tg-theme-hint-color: #a0a0a0;
+  --tg-theme-link-color: #3498db;
+  --tg-theme-button-color: #3498db;
+  --tg-theme-button-text-color: #ffffff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  margin: 0;
+  padding: 0;
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  text-align: left;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 .app-container {
   display: flex;
   flex-direction: column;
@@ -50,4 +33,90 @@
   flex: 1;
   overflow-y: auto;
   padding-bottom: 60px; /* Высота нижней панели навигации */
+  padding: 16px;
 }
+
+.card {
+  background-color: #2A2A2A;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2C2C2C;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--tg-theme-hint-color);
+  text-decoration: none;
+}
+
+.nav-item.active {
+  color: var(--tg-theme-link-color);
+}
+
+.nav-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.nav-text {
+  font-size: 12px;
+}
+
+button {
+  background-color: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+input, select, textarea {
+  background-color: #2C2C2C;
+  color: var(--tg-theme-text-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.read-the-docs {
+  color: var(--tg-theme-hint-color);
+}
+
+/* Удалите или закомментируйте неиспользуемые стили, такие как .logo и @keyframes logo-spin */

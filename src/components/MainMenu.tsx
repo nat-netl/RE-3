@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
 import './MainMenu.css';
 
 const MainMenu: React.FC = () => {
   const { wallet, balance } = useTonConnect();
-  const { tg, user } = useTelegram();
+  const { tg } = useTelegram();
+
+  useEffect(() => {
+    if (tg) {
+      tg.BackButton.hide();
+    }
+  }, [tg]);
 
   return (
     <div className="container">

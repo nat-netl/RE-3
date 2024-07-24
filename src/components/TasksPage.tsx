@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTelegram } from "../context/TelegramContext";
 import './TasksPage.css';
 
 const TasksPage: React.FC = () => {
   const { tg } = useTelegram();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (tg) {
+      tg.BackButton.show();
+      tg.BackButton.onClick(() => navigate('/main-menu'));
+    }
+
+    return () => {
+      if (tg) {
+        tg.BackButton.offClick();
+      }
+    };
+  }, [tg, navigate]);
 
   return (
     <div className="tasks-container">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { useTonConnect } from './hooks/useTonConnect';
-import { TelegramProvider } from "./context/TelegramContext";
+import { TelegramProvider } from './context/TelegramContext';
 import OnboardingPages from './components/OnboardingPages';
 import MainMenu from './components/MainMenu';
 import TasksPage from './components/TasksPage';

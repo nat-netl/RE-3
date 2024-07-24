@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import './MainMenu.css';
 
 const MainMenu: React.FC = () => {
   const { wallet, balance } = useTonConnect();
+  const location = useLocation();
 
   return (
     <div className="container">
@@ -24,7 +26,7 @@ const MainMenu: React.FC = () => {
         <div className="referrals-header">
           <div>
             <h3 className="referrals-title">Рефералы</h3>
-            <p className="referrals-count">1 024</p>
+            <p className="referrals-count">0</p>
           </div>
           <div style={{display: 'flex', gap: '10px'}}>
             <button className="invite-button">Пригласить</button>
@@ -42,11 +44,11 @@ const MainMenu: React.FC = () => {
           </thead>
           <tbody>
             {[
-              { level: 1, percent: "10%", count: 3, reward: 2390 },
-              { level: 2, percent: "5%", count: 4, reward: 1080 },
-              { level: 3, percent: "3%", count: 5, reward: 980 },
-              { level: 4, percent: "3%", count: 1, reward: 750 },
-              { level: 5, percent: "2%", count: 1, reward: 510 },
+              { level: 1, percent: "10%", count: 0, reward: 0 },
+              { level: 2, percent: "5%", count: 0, reward: 0 },
+              { level: 3, percent: "3%", count: 0, reward: 0 },
+              { level: 4, percent: "3%", count: 0, reward: 0 },
+              { level: 5, percent: "2%", count: 0, reward: 0 },
             ].map((row, index) => (
               <tr key={index} className="table-row">
                 <td className="table-cell">{row.level}</td>
@@ -74,7 +76,7 @@ const MainMenu: React.FC = () => {
         <h3 className="list-title">История транзакций</h3>
         {[
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
-          { type: 'Вывод', amount: '-2 000 LIBRA', date: '22.07.2024 14:02:02' },
+          { type: 'Вывод', amount:     '-2 000 LIBRA', date: '22.07.2024 14:02:02' },
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
         ].map((transaction, index) => (
@@ -89,20 +91,16 @@ const MainMenu: React.FC = () => {
       </div>
 
       <div className="nav-bar">
-        <div className="nav-item nav-item-active">
+        <Link to="/main-menu" className={`nav-item ${location.pathname === '/main-menu' ? 'nav-item-active' : ''}`}>
           <span className="nav-icon">🏠</span>
           <span className="nav-text">Главная</span>
-        </div>
-        <div className="nav-item">
+        </Link>
+        <Link to="/tasks" className={`nav-item ${location.pathname === '/tasks' ? 'nav-item-active' : ''}`}>
           <span className="nav-icon">☰</span>
           <span className="nav-text">Задания</span>
-        </div>
+        </Link>
         <div className="nav-item">
-          <span className="nav-icon">💰</span>
-          <span className="nav-text">Майнинг</span>
-        </div>
-        <div className="nav-item">
-          <span className="nav-icon">✉</span>
+          <span className="nav-icon">⛏️</span>
           <span className="nav-text">Кран</span>
         </div>
       </div>

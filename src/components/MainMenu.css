@@ -1,68 +1,70 @@
 .container {
-    min-height: 100vh;
-    background-color: #000;
-    color: #fff;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .balance-card {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .balance-title {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  .balance-amount {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .balance-change {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: #4CAF50;
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  
-  .wallet-label {
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  .wallet-address {
-    font-size: 12px;
-    word-break: break-all;
-  }
-  
-  .withdraw-button {
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 12px;
-    border-radius: 20px;
-    border: none;
-    font-size: 16px;
-    margin-top: 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  padding-bottom: 70px; /* Добавляем отступ внизу для фиксированной панели навигации */
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.balance-title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.balance-amount {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.balance-change {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #4CAF50;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.wallet-label {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.wallet-address {
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.withdraw-button {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .card {
   background-color: #2A2A2A;
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12); /* Добавляем тонкую линию сверху */
 }
 
 .referrals-header {
@@ -84,22 +86,22 @@
 }
 
 .invite-button {
-  background-color: #3F51B5;
+  background-color: #19191A;
   color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 13px 24px;
+  border-radius: 10px;
   border: none;
   font-size: 14px;
   cursor: pointer;
 }
 
 .copy-button {
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  color: white;
-  border-radius: 50%;
-  border: 1px solid white;
+  width: 50px;
+  height: 50px;
+  background-color: #19191A;
+  color: #ffffff;
+  border-radius: 10px;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,7 +125,7 @@
 }
 
 .table-row {
-  border-bottom: px solid #444;
+  border-bottom: 0px solid #444;
 }
 
 .list-title {
@@ -140,6 +142,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  border-bottom: 1px solid #444;
 }
 
 .transaction-receive {
@@ -164,6 +167,8 @@
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 1000; /* Обеспечивает, что навбар будет поверх другого контента */
+  border-top: 1.5px solid rgba(255, 255, 255, 0.12);
 }
 
 .nav-item {

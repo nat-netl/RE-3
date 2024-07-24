@@ -1,0 +1,30 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #2C2C2C;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .nav-text {
+    font-size: 12px;
+  }
+  
+  .nav-item.active {
+    color: #ffffff;
+  }
+  /* Остальные стили для .nav-item, .nav-icon, .nav-text */

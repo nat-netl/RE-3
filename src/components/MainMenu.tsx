@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
+import { useTelegram } from '../context/TelegramContext';
 import './MainMenu.css';
 
 const MainMenu: React.FC = () => {
   const { wallet, balance } = useTonConnect();
-  const location = useLocation();
+  const { tg, user } = useTelegram();
 
   return (
     <div className="container">
@@ -88,21 +88,6 @@ const MainMenu: React.FC = () => {
             <span className="transaction-date">{transaction.date}</span>
           </div>
         ))}
-      </div>
-
-      <div className="nav-bar">
-        <Link to="/main-menu" className={`nav-item ${location.pathname === '/main-menu' ? 'nav-item-active' : ''}`}>
-          <span className="nav-icon">🏠</span>
-          <span className="nav-text">Главная</span>
-        </Link>
-        <Link to="/tasks" className={`nav-item ${location.pathname === '/tasks' ? 'nav-item-active' : ''}`}>
-          <span className="nav-icon">☰</span>
-          <span className="nav-text">Задания</span>
-        </Link>
-        <div className="nav-item">
-          <span className="nav-icon">⛏️</span>
-          <span className="nav-text">Кран</span>
-        </div>
       </div>
     </div>
   );

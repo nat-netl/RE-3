@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
+import { useTelegram } from '../context/TelegramContext';
 
 const pages = [
   {
@@ -24,6 +25,7 @@ const OnboardingPages: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const { connectWallet, connected } = useTonConnect();
+  const { tg } = useTelegram();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -1,37 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 
 const pages = [
   {
-    subtitle: "Rebalancer",
-    title: "Welcome to",
-    description: "Rebalancer is a platform on TON for passive income. Increase your crypto earnings with Auto-Reinvestment just with one click",
-    buttonText: "Continue"
+    title: "Добро пожаловать в Rebalancer",
+    description: "Выполняйте задания, получайте вознаграждения, включайте майнинг для генерации прибыли и наслаждайтесь ежедневными airdrop-ами.",
+    buttonText: "Продолжить"
   },
   {
-    title: "Boost your APY through",
-    subtitle: "reinvestment",
-    description: "Reinvest your earnings automatically, boosting your APY from 5% to 150%. Let your money work for you.",
-    buttonText: "Connect wallet"
+    title: "Реинвестируйте заработанное",
+    description: "Увеличьте свой крипто-заработок, занимайтесь стейкингом и фармингом, получая доход до 300% более.",
+    buttonText: "Продолжить"
+  },
+  {
+    title: "Инвестиционная платформа на TON",
+    description: "Rebalancer — генерирующий комиссии жетон в пулах ликвидности за счет ребалансировки. Инвестируя в Rebalancer вы инвестируете в ТОП проектов TON.",
+    buttonText: "Подключить кошелек"
   }
 ];
 
 const OnboardingPages: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const { connectWallet, connected } = useTonConnect();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (connected) {
+      navigate('/main-menu');
+    }
+  }, [connected, navigate]);
+
+  useEffect(() => {
+    console.log('Current page:', currentPage);
+    console.log('Connected:', connected);
+  }, [currentPage, connected]);
+
   const handleButtonClick = async () => {
-    if (currentPage === 0) {
-      setCurrentPage(1);
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
     } else {
       try {
-        await connectWallet();
-        navigate('/main-menu');
+        if (typeof connectWallet === 'function') {
+          await connectWallet();
+          navigate('/main-menu');
+        } else {
+          setError('Функция подключения кошелька недоступна');
+        }
       } catch (error) {
+        setError('Не удалось подключить кошелек');
         console.error('Failed to connect wallet:', error);
-        // Здесь вы можете добавить обработку ошибки, например, показать пользователю сообщение об ошибке
       }
     }
   };
@@ -46,32 +65,29 @@ const OnboardingPages: React.FC = () => {
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: 'space-between',
       minHeight: '100vh',
       backgroundColor: '#000',
       color: '#fff',
       padding: '20px',
       textAlign: 'center'
     }}>
-      <div style={{width: '100%', maxWidth: '300px'}}>
-        <h2 style={{fontSize: '32px', color: '#3498db', marginBottom: '16px'}}>{page.subtitle}</h2>
-        
-        {/* Добавленное изображение */}
-        <img 
-          src="/safe.png" 
-          alt="Rebalancer Logo" 
+      <div style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+        <img
+          src="/safe.png"
+          alt="Rebalancer Logo"
           style={{
-            width: '200px', // или другой подходящий размер
+            width: '200px',
             height: 'auto',
             marginBottom: '24px'
           }}
         />
-
-        <h1 style={{fontSize: '24px', marginBottom: '8px'}}>{page.title}</h1>
-        
+        <h1 style={{fontSize: '24px', marginBottom: '16px'}}>{page.title}</h1>
         <p style={{fontSize: '16px', color: '#a0a0a0', marginBottom: '24px'}}>{page.description}</p>
-        <button 
+        {error && <p style={{color: 'red', marginBottom: '16px'}}>{error}</p>}
+      </div>
+      <div>
+        <button
           onClick={handleButtonClick}
           style={{
             width: '100%',
@@ -87,20 +103,22 @@ const OnboardingPages: React.FC = () => {
         >
           {page.buttonText}
         </button>
-        <button 
-          onClick={handleSkip}
-          style={{
-            width: '100%',
-            backgroundColor: 'transparent',
-            color: '#a0a0a0',
-            padding: '12px',
-            border: 'none',
-            fontSize: '16px',
-            cursor: 'pointer'
-          }}
-        >
-          Skip
-        </button>
+        {currentPage < pages.length - 1 && (
+          <button
+            onClick={handleSkip}
+            style={{
+              width: '100%',
+              backgroundColor: 'transparent',
+              color: '#a0a0a0',
+              padding: '12px',
+              border: 'none',
+              fontSize: '16px',
+              cursor: 'pointer'
+            }}
+          >
+            Пропустить
+          </button>
+        )}
       </div>
     </div>
   );

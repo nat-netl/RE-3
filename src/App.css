@@ -1,28 +1,3 @@
-:root {
-  --tg-theme-bg-color: #000000;
-  --tg-theme-text-color: #ffffff;
-  --tg-theme-hint-color: #a0a0a0;
-  --tg-theme-link-color: #3498db;
-  --tg-theme-button-color: #3498db;
-  --tg-theme-button-text-color: #ffffff;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--tg-theme-bg-color);
-  color: var(--tg-theme-text-color);
-  margin: 0;
-  padding: 0;
-}
-
-#root {
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: left;
-}
-
 .app-container {
   display: flex;
   flex-direction: column;
@@ -32,8 +7,8 @@ body {
 .content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 60px; /* Высота нижней панели навигации */
   padding: 16px;
+  padding-bottom: 70px; /* Увеличено, чтобы учесть высоту нижней панели навигации */
 }
 
 .card {
@@ -54,6 +29,7 @@ body {
   justify-content: space-around;
   padding: 10px 0;
   border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+  z-index: 1000;
 }
 
 .nav-item {
@@ -118,5 +94,3 @@ p {
 .read-the-docs {
   color: var(--tg-theme-hint-color);
 }
-
-/* Удалите или закомментируйте неиспользуемые стили, такие как .logo и @keyframes logo-spin */

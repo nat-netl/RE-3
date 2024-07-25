@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTelegram } from "../context/TelegramContext";
-import './ RebaAcademy.css';
+import '../styles/ RebaAcademy.css';
 import confetti from 'canvas-confetti';
 
 const explanation = {

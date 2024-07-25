@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
-import './MainMenu.css';
+import '../styles/MainMenu.css';
 
 const MainMenu: React.FC = () => {
   const { wallet, balance, connected, connectWallet } = useTonConnect();

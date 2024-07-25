@@ -12,11 +12,11 @@ const App: React.FC = () => {
   const { connected } = useTonConnect();
   const location = useLocation();
 
-  const showNavigationBar = location.pathname !== '/' || connected;
+  const isOnboarding = location.pathname === '/' && !connected;
 
   return (
     <TelegramProvider>
-      <div className="app-container">
+      <div className={`app-container ${isOnboarding ? 'onboarding' : ''}`}>
         <div className="content">
           <Routes>
             <Route
@@ -27,7 +27,7 @@ const App: React.FC = () => {
             <Route path="/tasks" element={<TasksPage />} />
           </Routes>
         </div>
-        {showNavigationBar && <NavigationBar />}
+        {!isOnboarding && <NavigationBar />}
       </div>
     </TelegramProvider>
   );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
-import './OnboardingPages.css';
 
 const pages = [
   {
@@ -33,6 +32,11 @@ const OnboardingPages: React.FC = () => {
     }
   }, [connected, navigate]);
 
+  useEffect(() => {
+    console.log('Current page:', currentPage);
+    console.log('Connected:', connected);
+  }, [currentPage, connected]);
+
   const handleButtonClick = async () => {
     if (currentPage < pages.length - 1) {
       setCurrentPage(currentPage + 1);
@@ -58,28 +62,59 @@ const OnboardingPages: React.FC = () => {
   const page = pages[currentPage];
 
   return (
-    <div className="onboarding-container">
-      <div className="onboarding-content">
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      minHeight: '100vh',
+      backgroundColor: '#000',
+      color: '#fff',
+      padding: '20px',
+      textAlign: 'center'
+    }}>
+      <div style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         <img
           src="/safe.png"
           alt="Rebalancer Logo"
-          className="onboarding-logo"
+          style={{
+            width: '200px',
+            height: 'auto',
+            marginBottom: '24px'
+          }}
         />
-        <h1 className="onboarding-title">{page.title}</h1>
-        <p className="onboarding-description">{page.description}</p>
-        {error && <p className="onboarding-error">{error}</p>}
+        <h1 style={{fontSize: '24px', marginBottom: '16px'}}>{page.title}</h1>
+        <p style={{fontSize: '16px', color: '#a0a0a0', marginBottom: '24px'}}>{page.description}</p>
+        {error && <p style={{color: 'red', marginBottom: '16px'}}>{error}</p>}
       </div>
-      <div className="onboarding-buttons">
+      <div>
         <button
           onClick={handleButtonClick}
-          className="onboarding-button primary"
+          style={{
+            width: '100%',
+            backgroundColor: '#3498db',
+            color: 'white',
+            padding: '12px',
+            borderRadius: '8px',
+            border: 'none',
+            fontSize: '16px',
+            marginBottom: '12px',
+            cursor: 'pointer'
+          }}
         >
           {page.buttonText}
         </button>
         {currentPage < pages.length - 1 && (
           <button
             onClick={handleSkip}
-            className="onboarding-button secondary"
+            style={{
+              width: '100%',
+              backgroundColor: 'transparent',
+              color: '#a0a0a0',
+              padding: '12px',
+              border: 'none',
+              fontSize: '16px',
+              cursor: 'pointer'
+            }}
           >
             Пропустить
           </button>

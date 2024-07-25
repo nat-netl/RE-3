@@ -82,7 +82,7 @@ const MainMenu: React.FC = () => {
         <h3 className="list-title">История транзакций</h3>
         {[
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
-          { type: 'Вывод', amount:     '-2 000 LIBRA', date: '22.07.2024 14:02:02' },
+          { type: 'Вывод', amount: '-2 000 LIBRA', date: '22.07.2024 14:02:02' },
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
           { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
         ].map((transaction, index) => (

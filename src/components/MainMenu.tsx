@@ -4,7 +4,7 @@ import { useTelegram } from '../context/TelegramContext';
 import './MainMenu.css';
 
 const MainMenu: React.FC = () => {
-  const { wallet, balance } = useTonConnect();
+  const { wallet, balance, connect } = useTonConnect();
   const { tg } = useTelegram();
 
   useEffect(() => {
@@ -12,6 +12,10 @@ const MainMenu: React.FC = () => {
       tg.BackButton.hide();
     }
   }, [tg]);
+
+  const handleConnectWallet = () => {
+    connect();
+  };
 
   return (
     <div className="container">
@@ -21,11 +25,17 @@ const MainMenu: React.FC = () => {
         <p className="balance-change">↑ 6,18% • $10,34</p>
         <p className="wallet-label">Кошелек</p>
         <p className="wallet-address">
-          {wallet ? wallet.address : 'UQANa221s23asd12s12saasd1sa2sPLy_z'}
+          {wallet ? wallet.address : ''}
         </p>
-        <button className="withdraw-button">
-          <span style={{marginRight: '5px'}}>↑</span> Вывод
-        </button>
+        {wallet ? (
+          <button className="withdraw-button">
+            <span style={{marginRight: '5px'}}>↑</span> Вывод
+          </button>
+        ) : (
+          <button className="connect-wallet-button" onClick={handleConnectWallet}>
+            Подключить кошелек
+          </button>
+        )}
       </div>
 
       <div className="card">

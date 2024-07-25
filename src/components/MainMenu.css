@@ -8,10 +8,11 @@
 }
 
 .balance-card {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .balance-title {
@@ -156,4 +157,27 @@
 .transaction-date {
   font-size: 12px;
   color: #888;
+}
+
+.connect-wallet-button {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connect-wallet-button:hover {
+  background: linear-gradient(to left, #45a049, #4CAF50);
+}
+
+.withdraw-button {
+  /* existing styles */
 }

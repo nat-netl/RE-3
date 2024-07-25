@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
   return (
     <TelegramProvider>
-      <div className={`app-container ${isOnboarding ? 'onboarding' : ''}`}>
+      <div className="app-container">
         <div className="content">
           <Routes>
             <Route

@@ -1,7 +1,8 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: #000000;
 }
 
@@ -9,7 +10,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 16px;
-  padding-bottom: 70px; /* Учитываем высоту навигационной панели */
+  padding-bottom: 70px; /* Высота навигационной панели + дополнительный отступ */
 }
 
 .bottom-nav {
@@ -24,6 +25,7 @@
   border-top: 1.5px solid rgba(255, 255, 255, 0.12);
   z-index: 1000;
 }
+
 
 
 .card {

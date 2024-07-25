@@ -1,63 +1,33 @@
-.onboarding-container {
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2C2C2C;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-  padding: 20px;
-  text-align: center;
-  box-sizing: border-box;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+  z-index: 1000;
 }
 
-.onboarding-content {
-  flex: 1;
+.nav-item {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  color: #a0a0a0;
+  text-decoration: none;
 }
 
-.onboarding-logo {
-  width: 200px;
-  height: auto;
-  margin-bottom: 24px;
+.nav-item.active {
+  color: #3498db;
 }
 
-.onboarding-title {
+.nav-icon {
   font-size: 24px;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
-.onboarding-description {
-  font-size: 16px;
-  color: var(--tg-theme-hint-color);
-  margin-bottom: 24px;
-}
-
-.onboarding-error {
-  color: #ff4d4f;
-  margin-bottom: 16px;
-}
-
-.onboarding-buttons {
-  width: 100%;
-}
-
-.onboarding-button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-
-.onboarding-button.primary {
-  background-color: var(--tg-theme-button-color);
-  color: var(--tg-theme-button-text-color);
-}
-
-.onboarding-button.secondary {
-  background-color: transparent;
-  color: var(--tg-theme-hint-color);
+.nav-text {
+  font-size: 12px;
 }

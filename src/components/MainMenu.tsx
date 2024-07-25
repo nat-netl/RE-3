@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
 import './MainMenu.css';
 
 const MainMenu: React.FC = () => {
-  const { wallet, balance, connect } = useTonConnect();
+  const { wallet, balance, connected, connectWallet } = useTonConnect();
   const { tg } = useTelegram();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (tg) {
@@ -13,8 +15,18 @@ const MainMenu: React.FC = () => {
     }
   }, [tg]);
 
-  const handleConnectWallet = () => {
-    connect();
+  useEffect(() => {
+    if (connected) {
+      console.log('Wallet connected successfully');
+    }
+  }, [connected]);
+
+  const handleConnectWallet = async () => {
+    try {
+      await connectWallet();
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+    }
   };
 
   return (
@@ -27,7 +39,7 @@ const MainMenu: React.FC = () => {
         <p className="wallet-address">
           {wallet ? wallet.address : ''}
         </p>
-        {wallet ? (
+        {connected ? (
           <button className="withdraw-button">
             <span style={{marginRight: '5px'}}>↑</span> Вывод
           </button>
@@ -45,8 +57,16 @@ const MainMenu: React.FC = () => {
             <p className="referrals-count">0</p>
           </div>
           <div style={{display: 'flex', gap: '10px'}}>
-            <button className="invite-button">Пригласить</button>
-            <button className="copy-button">⧉</button>
+            {connected ? (
+              <>
+                <button className="invite-button">Пригласить</button>
+                <button className="copy-button">⧉</button>
+              </>
+            ) : (
+              <button className="connect-wallet-button" onClick={handleConnectWallet}>
+                Подключить кошелек
+              </button>
+            )}
           </div>
         </div>
         <table className="table">

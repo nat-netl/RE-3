@@ -57,16 +57,8 @@ const MainMenu: React.FC = () => {
             <p className="referrals-count">0</p>
           </div>
           <div style={{display: 'flex', gap: '10px'}}>
-            {connected ? (
-              <>
-                <button className="invite-button">Пригласить</button>
-                <button className="copy-button">⧉</button>
-              </>
-            ) : (
-              <button className="connect-wallet-button" onClick={handleConnectWallet}>
-                Подключить кошелек
-              </button>
-            )}
+            <button className="invite-button">Пригласить</button>
+            <button className="copy-button">⧉</button>
           </div>
         </div>
         <table className="table">

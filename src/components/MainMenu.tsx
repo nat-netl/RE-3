@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
 import '../styles/MainMenu.css';
+import backgroundVideo from '../assets/video.mp4';
 
 const MainMenu: React.FC = () => {
   const { wallet, balance, connected, connectWallet } = useTonConnect();
@@ -32,6 +33,9 @@ const MainMenu: React.FC = () => {
   return (
     <div className="container">
       <div className="balance-card">
+      <video autoPlay loop muted playsInline>
+    <source src={backgroundVideo} type="video/mp4" />
+      </video>
         <h2 className="balance-title">Баланс</h2>
         <p className="balance-amount">{balance || '0'} REBA</p>
         <p className="balance-change">↑ 6,18% • $10,34</p>

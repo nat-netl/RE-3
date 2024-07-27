@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
@@ -14,18 +14,6 @@ const MainMenu: React.FC = () => {
   const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
 
-  useEffect(() => {
-    if (tg) {
-      tg.BackButton.hide();
-    }
-  }, [tg]);
-
-  useEffect(() => {
-    if (connected) {
-      console.log('Wallet connected successfully');
-    }
-  }, [connected]);
-
   const handleConnectWallet = async () => {
     try {
       await connectWallet();
@@ -35,22 +23,9 @@ const MainMenu: React.FC = () => {
   };
 
   const handleInvite = () => {
-    if (tg && tg.showPopup) {
-      tg.showPopup({
-        title: 'Пригласить друга',
-        message: 'Выберите, как вы хотите пригласить друга:',
-        buttons: [
-          { id: 'share', type: 'default', text: 'Поделиться в Telegram' },
-          { id: 'copy', type: 'default', text: 'Скопировать ссылку' },
-        ]
-      }, (buttonId) => {
-        if (buttonId === 'share') {
-          // Логика для шеринга в Telegram
-          tg.shareUrl('https://t.me/your_bot?start=REF' + user?.id);
-        } else if (buttonId === 'copy') {
-          handleCopyReferralLink();
-        }
-      });
+    if (tg && tg.shareUrl) {
+      const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
+      tg.shareUrl(referralLink);
     }
   };
 

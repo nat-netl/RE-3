@@ -15,13 +15,20 @@ const MainMenu: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
+    console.log("window.Telegram:", window.Telegram);
+    console.log("window.Telegram.WebApp:", window.Telegram.WebApp);
     if (window.Telegram.WebApp) {
       console.log("Telegram Web App API доступен");
       console.log("Версия API:", window.Telegram.WebApp.version);
+      console.log("Методы API:", Object.keys(window.Telegram.WebApp));
     } else {
       console.log("Telegram Web App API недоступен");
     }
-  }, []);
+    console.log("tg объект:", tg);
+    if (tg) {
+      console.log("Методы tg объекта:", Object.keys(tg));
+    }
+  }, [tg]);
 
   const handleConnectWallet = async () => {
     try {
@@ -32,28 +39,46 @@ const MainMenu: React.FC = () => {
   };
 
   const handleInvite = () => {
-    try {
-      const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
-      if (window.Telegram.WebApp.shareUrl) {
-        console.log("Попытка шаринга через Telegram Web App API");
-        window.Telegram.WebApp.shareUrl(referralLink);
-      } else if (tg && tg.shareUrl) {
-        console.log("Попытка шаринга через tg объект");
-        tg.shareUrl(referralLink);
-      } else {
-        throw new Error("Методы шаринга недоступны");
-      }
-    } catch (error) {
-      console.error("Ошибка при попытке шаринга:", error);
+    const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
+    console.log("Попытка шаринга. Реферальная ссылка:", referralLink);
+
+    if (window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+      console.log("Используем openTelegramLink");
+      window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}`);
+    } else if (window.Telegram.WebApp && window.Telegram.WebApp.shareUrl) {
+      console.log("Используем WebApp.shareUrl");
+      window.Telegram.WebApp.shareUrl(referralLink);
+    } else if (tg && tg.shareUrl) {
+      console.log("Используем tg.shareUrl");
+      tg.shareUrl(referralLink);
+    } else if (navigator.share) {
+      console.log("Используем navigator.share");
+      navigator.share({
+        title: 'Приглашение',
+        text: `Присоединяйтесь к нашему боту по этой ссылке: ${referralLink}`,
+        url: referralLink,
+      }).then(() => {
+        console.log('Успешно поделились');
+      }).catch((error) => {
+        console.log('Ошибка шаринга', error);
+        handleCopyReferralLink();
+      });
+    } else {
+      console.log("Методы шаринга недоступны, копируем ссылку");
       handleCopyReferralLink();
     }
   };
 
   const handleCopyReferralLink = () => {
     const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
+    console.log("Копирование ссылки:", referralLink);
     navigator.clipboard.writeText(referralLink).then(() => {
+      console.log("Ссылка успешно скопирована");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
+    }).catch(err => {
+      console.error("Ошибка при копировании:", err);
+      alert(`Не удалось скопировать ссылку. Вот ваша реферальная ссылка: ${referralLink}`);
     });
   };
 

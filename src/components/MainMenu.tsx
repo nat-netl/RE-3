@@ -3,32 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
 import { useUserBalance } from '../hooks/useUserBalance';
+import { useTransactions } from '../hooks/useTransactions';
 import { referralLevels } from '../utils/referralSystem';
 import '../styles/MainMenu.css';
 import backgroundVideo from '../assets/video.mp4';
+import tonIcon from '../assets/ton.svg'; 
 
 const MainMenu: React.FC = () => {
   const { wallet, connected, connectWallet } = useTonConnect();
   const { balance } = useUserBalance();
   const { tg, user } = useTelegram();
+  const { transactions } = useTransactions();
   const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
-    console.log("window.Telegram:", window.Telegram);
-    console.log("window.Telegram.WebApp:", window.Telegram.WebApp);
-    if (window.Telegram.WebApp) {
-      console.log("Telegram Web App API доступен");
-      console.log("Версия API:", window.Telegram.WebApp.version);
-      console.log("Методы API:", Object.keys(window.Telegram.WebApp));
-    } else {
-      console.log("Telegram Web App API недоступен");
-    }
-    console.log("tg объект:", tg);
     if (tg) {
-      console.log("Методы tg объекта:", Object.keys(tg));
+      tg.BackButton.hide();
     }
   }, [tg]);
+
+  useEffect(() => {
+    if (connected) {
+      console.log('Wallet connected successfully');
+    }
+  }, [connected]);
 
   const handleConnectWallet = async () => {
     try {
@@ -106,6 +105,7 @@ const MainMenu: React.FC = () => {
           </button>
         ) : (
           <button className="connect-wallet-button" onClick={handleConnectWallet}>
+            <img src={tonIcon} alt="TON" className="ton-icon" />
             Подключить кошелек
           </button>
         )}
@@ -157,20 +157,20 @@ const MainMenu: React.FC = () => {
 
       <div className="card">
         <h3 className="list-title">История транзакций</h3>
-        {[
-          { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
-          { type: 'Вывод', amount: '-2 000 LIBRA', date: '22.07.2024 14:02:02' },
-          { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
-          { type: 'Получение', amount: '+2 000 LIBRA', date: '22.07.2024 14:02' },
-        ].map((transaction, index) => (
-          <div key={index} className="transaction">
-            <span className={transaction.type === 'Получение' ? 'transaction-receive' : 'transaction-withdraw'}>
-              {transaction.type}
-            </span>
-            <span>{transaction.amount}</span>
-            <span className="transaction-date">{transaction.date}</span>
-          </div>
-        ))}
+        {transactions.length > 0 ? (
+          transactions.map((transaction) => (
+            <div key={transaction.id} className="transaction">
+              <span className={`transaction-type ${transaction.type === 'Получение' ? 'transaction-receive' : 'transaction-withdraw'}`}>
+                {transaction.type}
+              </span>
+              <span className="transaction-amount">{transaction.amount}</span>
+              <span className="transaction-date">{new Date(transaction.date).toLocaleString()}</span>
+              <span className="transaction-description">{transaction.description}</span>
+            </div>
+          ))
+        ) : (
+          <p>Нет транзакций для отображения</p>
+        )}
       </div>
     </div>
   );

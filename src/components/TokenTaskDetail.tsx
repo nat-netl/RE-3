@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../context/TelegramContext';
 import { useUserBalance } from '../hooks/useUserBalance';
+import { useTransactions } from '../hooks/useTransactions';
 import { checkTokenOwnership } from '../utils/blockchain';
 import { tokenTasks, TokenTask } from '../config/tokenTasks';
 import { distributeReferralRewards } from '../utils/referralSystem';
@@ -12,6 +13,7 @@ const TokenTaskDetail: React.FC = () => {
   const navigate = useNavigate();
   const { tokenId } = useParams<{ tokenId: string }>();
   const { addToBalance } = useUserBalance();
+  const { addTransaction } = useTransactions();
   const [task, setTask] = useState<TokenTask | null>(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [ownsToken, setOwnsToken] = useState(false);
@@ -66,6 +68,13 @@ const TokenTaskDetail: React.FC = () => {
         const rewardAmount = Number(task.reward.split(' ')[0]);
         addToBalance(rewardAmount);
         
+        // Добавляем транзакцию
+        addTransaction({
+          type: 'Получение',
+          amount: `${rewardAmount} REBA`,
+          description: `Выполнение задания ${task.name}`
+        });
+
         // Распределение реферальных наград
         await distributeReferralRewards(user.id, rewardAmount);
 

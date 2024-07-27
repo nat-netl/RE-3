@@ -4,6 +4,7 @@ import { useTelegram } from '../context/TelegramContext';
 import ChannelTaskCard from '../card/ChannelTaskCard';
 import { useUserBalance } from '../hooks/useUserBalance';
 import { useBalance } from '../context/BalanceContext';
+import { useTransactions } from '../hooks/useTransactions';
 import "../styles/ChannelTasks.css";
 
 interface Channel {
@@ -20,6 +21,7 @@ const ChannelTasks: React.FC = () => {
   const navigate = useNavigate();
   const { addToBalance } = useUserBalance();
   const { updateChannelRewards } = useBalance();
+  const { addTransaction } = useTransactions();
   const [channels, setChannels] = useState<Channel[]>([]);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -31,7 +33,6 @@ const ChannelTasks: React.FC = () => {
       { id: 4, name: 'Канал №4', reward: '120 LIBRA', completed: false, link: '/channel/4', channelLink: 'https://t.me/channel4' },
       { id: 5, name: 'Канал №5', reward: '180 LIBRA', completed: false, link: '/channel/5', channelLink: 'https://t.me/channel5' },
     ];
-
     if (user) {
       const completedChannels = JSON.parse(localStorage.getItem(`completedChannels_${user.id}`) || '[]');
       const filteredChannels = initialChannels.filter(channel => !completedChannels.includes(channel.id));
@@ -64,6 +65,14 @@ const ChannelTasks: React.FC = () => {
       const rewardAmount = parseInt(channel.reward.split(' ')[0]);
       addToBalance(rewardAmount);
       updateChannelRewards(rewardAmount);
+      
+      // Добавляем транзакцию
+      addTransaction({
+        type: 'Получение',
+        amount: `${rewardAmount} LIBRA`,
+        description: `Подписка на канал ${channel.name}`
+      });
+
       showMessage(`Вы получили ${channel.reward} за подписку на ${channel.name}!`);
       
       // Сохраняем ID выполненного задания в localStorage
@@ -79,7 +88,6 @@ const ChannelTasks: React.FC = () => {
   const handleRefresh = () => {
     showMessage('Обновление списка каналов...');
     // Здесь можно добавить логику для обновления списка каналов
-    // Например, повторно загрузить начальный список и отфильтровать выполненные задания
   };
 
   if (!user) {

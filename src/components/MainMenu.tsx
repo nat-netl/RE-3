@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
@@ -14,6 +14,15 @@ const MainMenu: React.FC = () => {
   const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
 
+  useEffect(() => {
+    if (window.Telegram.WebApp) {
+      console.log("Telegram Web App API доступен");
+      console.log("Версия API:", window.Telegram.WebApp.version);
+    } else {
+      console.log("Telegram Web App API недоступен");
+    }
+  }, []);
+
   const handleConnectWallet = async () => {
     try {
       await connectWallet();
@@ -23,9 +32,20 @@ const MainMenu: React.FC = () => {
   };
 
   const handleInvite = () => {
-    if (tg && tg.shareUrl) {
+    try {
       const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
-      tg.shareUrl(referralLink);
+      if (window.Telegram.WebApp.shareUrl) {
+        console.log("Попытка шаринга через Telegram Web App API");
+        window.Telegram.WebApp.shareUrl(referralLink);
+      } else if (tg && tg.shareUrl) {
+        console.log("Попытка шаринга через tg объект");
+        tg.shareUrl(referralLink);
+      } else {
+        throw new Error("Методы шаринга недоступны");
+      }
+    } catch (error) {
+      console.error("Ошибка при попытке шаринга:", error);
+      handleCopyReferralLink();
     }
   };
 

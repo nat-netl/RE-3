@@ -7,14 +7,28 @@ interface ChannelTaskCardProps {
   reward: string;
   completed: boolean;
   link: string;
+  channelLink: string; // New prop for the channel link
+  onSubscribe: (id: number) => void; // New prop for handling subscription
 }
 
-const ChannelTaskCard: React.FC<ChannelTaskCardProps> = ({ id, name, reward, completed, link }) => {
+const ChannelTaskCard: React.FC<ChannelTaskCardProps> = ({ 
+  id, name, reward, completed, link, channelLink, onSubscribe 
+}) => {
   const navigate = useNavigate();
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!completed) {
+      window.open(channelLink, '_blank');
+      onSubscribe(id);
+    } else {
+      navigate(link);
+    }
+  };
+
   return (
-    <div 
-      onClick={() => navigate(link)}
+    <div
+      onClick={handleClick}
       className={`channel-item ${completed ? 'completed' : ''}`}
     >
       <img src="/path-to-channel-icon.png" alt="Channel icon" className="channel-icon" />

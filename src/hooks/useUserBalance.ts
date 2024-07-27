@@ -7,23 +7,29 @@ export const useUserBalance = () => {
 
   useEffect(() => {
     if (connected && wallet) {
-      // Здесь должна быть логика получения баланса из кошелька
-      // Для примера используем случайное число
-      setBalance(Math.floor(Math.random() * 1000));
+      // Загружаем баланс из localStorage при подключении кошелька
+      const savedBalance = localStorage.getItem('userBalance');
+      if (savedBalance) {
+        setBalance(Number(savedBalance));
+      }
     }
   }, [connected, wallet]);
 
   const addToBalance = (amount: number) => {
-    setBalance(prevBalance => prevBalance + amount);
-    // Здесь должна быть логика обновления баланса в кошельке или на бэкенде
-    console.log(`Баланс увеличен на ${amount} LIBRA`);
+    const newBalance = balance + amount;
+    setBalance(newBalance);
+    // Сохраняем обновленный баланс в localStorage
+    localStorage.setItem('userBalance', newBalance.toString());
+    console.log(`Баланс увеличен на ${amount} REBA`);
   };
 
   const subtractFromBalance = (amount: number) => {
     if (balance >= amount) {
-      setBalance(prevBalance => prevBalance - amount);
-      // Здесь должна быть логика обновления баланса в кошельке или на бэкенде
-      console.log(`Баланс уменьшен на ${amount} LIBRA`);
+      const newBalance = balance - amount;
+      setBalance(newBalance);
+      // Сохраняем обновленный баланс в localStorage
+      localStorage.setItem('userBalance', newBalance.toString());
+      console.log(`Баланс уменьшен на ${amount} REBA`);
       return true;
     } else {
       console.log('Недостаточно средств');

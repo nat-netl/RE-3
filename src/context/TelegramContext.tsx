@@ -1,24 +1,36 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+interface TelegramUser {
+  id: number;
+  username?: string;
+}
 
 interface TelegramContextType {
   tg: any;
-  user: any;
+  user: TelegramUser | null;
 }
 
 const TelegramContext = createContext<TelegramContextType | undefined>(undefined);
 
 export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tg, setTg] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<TelegramUser | null>(null);
 
   useEffect(() => {
-    const telegram = (window as any).Telegram?.WebApp;
-    if (telegram) {
-      setTg(telegram);
-      setUser(telegram.initDataUnsafe?.user);
-      
-      telegram.ready();
-      telegram.expand();
+    const telegram = (window as any).Telegram.WebApp;
+    setTg(telegram);
+
+    if (telegram.initDataUnsafe && telegram.initDataUnsafe.user) {
+      setUser({
+        id: telegram.initDataUnsafe.user.id,
+        username: telegram.initDataUnsafe.user.username,
+      });
+    } else {
+      // Если мы не можем получить пользователя из Telegram, создадим временного пользователя
+      setUser({
+        id: Date.now(), // Используем текущее время как временный ID
+        username: 'temp_user'
+      });
     }
   }, []);
 

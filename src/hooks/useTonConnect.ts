@@ -1,12 +1,21 @@
 import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useBalance } from '../context/BalanceContext';
+import { useEffect } from 'react';
 
 export function useTonConnect() {
   const [tonConnectUI] = useTonConnectUI();
+  const { balance, updateBalance } = useBalance();
+
+  useEffect(() => {
+    if (tonConnectUI.account?.balance) {
+      updateBalance(tonConnectUI.account.balance);
+    }
+  }, [tonConnectUI.account?.balance, updateBalance]);
 
   return {
     connected: tonConnectUI.connected,
     wallet: tonConnectUI.account,
-    balance: tonConnectUI.account?.balance,
+    balance: balance,
     connectWallet: async () => {
       if (tonConnectUI.connected) {
         return; // Already connected

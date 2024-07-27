@@ -5,22 +5,28 @@ interface TokenTaskCardProps {
   id: number;
   name: string;
   reward: string;
+  link: string;
+  completed: boolean;
 }
 
-const TokenTaskCard: React.FC<TokenTaskCardProps> = ({ id, name, reward }) => {
+const TokenTaskCard: React.FC<TokenTaskCardProps> = ({ id, name, reward, link, completed }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate(`/token-task/${id}`)}
-      className="token-item"
+      onClick={() => navigate(link)}
+      className={`token-item ${completed ? 'completed' : ''}`}
     >
       <div className="token-icon">₭</div>
       <div className="token-info">
         <span className="token-name">{name}</span>
         <span className="token-reward">{reward}</span>
       </div>
-      <span className="arrow-icon">›</span>
+      {completed ? (
+        <span className="completed-icon">✓</span>
+      ) : (
+        <span className="arrow-icon">›</span>
+      )}
     </div>
   );
 };

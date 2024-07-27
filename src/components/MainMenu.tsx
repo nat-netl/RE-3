@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTonConnect } from '../hooks/useTonConnect';
 import { useTelegram } from '../context/TelegramContext';
+import { useUserBalance } from '../hooks/useUserBalance';
+import { referralLevels } from '../utils/referralSystem';
 import '../styles/MainMenu.css';
 import backgroundVideo from '../assets/video.mp4';
 
 const MainMenu: React.FC = () => {
-  const { wallet, balance, connected, connectWallet } = useTonConnect();
-  const { tg } = useTelegram();
+  const { wallet, connected, connectWallet } = useTonConnect();
+  const { balance } = useUserBalance();
+  const { tg, user } = useTelegram();
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     if (tg) {
@@ -30,14 +34,47 @@ const MainMenu: React.FC = () => {
     }
   };
 
+  const handleInvite = () => {
+    if (tg && tg.showPopup) {
+      tg.showPopup({
+        title: 'Пригласить друга',
+        message: 'Выберите, как вы хотите пригласить друга:',
+        buttons: [
+          { id: 'share', type: 'default', text: 'Поделиться в Telegram' },
+          { id: 'copy', type: 'default', text: 'Скопировать ссылку' },
+        ]
+      }, (buttonId) => {
+        if (buttonId === 'share') {
+          // Логика для шеринга в Telegram
+          tg.shareUrl('https://t.me/your_bot?start=REF' + user?.id);
+        } else if (buttonId === 'copy') {
+          handleCopyReferralLink();
+        }
+      });
+    }
+  };
+
+  const handleCopyReferralLink = () => {
+    const referralLink = `https://t.me/your_bot?start=REF${user?.id}`;
+    navigator.clipboard.writeText(referralLink).then(() => {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+    });
+  };
+
   return (
     <div className="container">
+      {showNotification && (
+        <div className="notification">
+          Пригласительная ссылка скопирована в буфер обмена
+        </div>
+      )}
       <div className="balance-card">
-      <video autoPlay loop muted playsInline>
-    <source src={backgroundVideo} type="video/mp4" />
-      </video>
+        <video autoPlay loop muted playsInline>
+          <source src={backgroundVideo} type="video/mp4" />
+        </video>
         <h2 className="balance-title">Баланс</h2>
-        <p className="balance-amount">{balance || '0'} REBA</p>
+        <p className="balance-amount">{balance} REBA</p>
         <p className="balance-change">↑ 6,18% • $10,34</p>
         <p className="wallet-label">Кошелек</p>
         <p className="wallet-address">
@@ -61,8 +98,8 @@ const MainMenu: React.FC = () => {
             <p className="referrals-count">0</p>
           </div>
           <div style={{display: 'flex', gap: '10px'}}>
-            <button className="invite-button">Пригласить</button>
-            <button className="copy-button">⧉</button>
+            <button className="invite-button" onClick={handleInvite}>Пригласить</button>
+            <button className="copy-button" onClick={handleCopyReferralLink}>⧉</button>
           </div>
         </div>
         <table className="table">
@@ -75,18 +112,12 @@ const MainMenu: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {[
-              { level: 1, percent: "10%", count: 0, reward: 0 },
-              { level: 2, percent: "5%", count: 0, reward: 0 },
-              { level: 3, percent: "3%", count: 0, reward: 0 },
-              { level: 4, percent: "3%", count: 0, reward: 0 },
-              { level: 5, percent: "2%", count: 0, reward: 0 },
-            ].map((row, index) => (
-              <tr key={index} className="table-row">
-                <td className="table-cell">{row.level}</td>
-                <td className="table-cell">{row.percent}</td>
-                <td className="table-cell">{row.count}</td>
-                <td className="table-cell">{row.reward}</td>
+            {referralLevels.map((level) => (
+              <tr key={level.level} className="table-row">
+                <td className="table-cell">{level.level}</td>
+                <td className="table-cell">{level.percentage}%</td>
+                <td className="table-cell">0</td>
+                <td className="table-cell">0 REBA</td>
               </tr>
             ))}
           </tbody>

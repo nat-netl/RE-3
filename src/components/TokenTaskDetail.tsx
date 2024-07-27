@@ -1,68 +1,120 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTelegram } from '../context/TelegramContext';
+import { useUserBalance } from '../hooks/useUserBalance';
+import { checkTokenOwnership } from '../utils/blockchain';
+import { tokenTasks, TokenTask } from '../config/tokenTasks';
+import { distributeReferralRewards } from '../utils/referralSystem';
 import '../styles/TokenTaskDetail.css';
 
-interface TaskStep {
-  id: number;
-  description: string;
-}
-
 const TokenTaskDetail: React.FC = () => {
-  const { tg } = useTelegram();
+  const { tg, user } = useTelegram();
   const navigate = useNavigate();
   const { tokenId } = useParams<{ tokenId: string }>();
+  const { addToBalance } = useUserBalance();
+  const [task, setTask] = useState<TokenTask | null>(null);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [ownsToken, setOwnsToken] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isTaskCompleted, setIsTaskCompleted] = useState(false);
 
   useEffect(() => {
-    if (tg) {
+    const currentTask = tokenTasks.find(t => t.id === Number(tokenId));
+    if (currentTask) {
+      setTask(currentTask);
+    } else {
+      navigate('/token-tasks');
+    }
+  }, [tokenId, navigate]);
+
+  useEffect(() => {
+    if (tg && tg.BackButton) {
       tg.BackButton.show();
-      tg.BackButton.onClick(() => navigate('./token-task'));
+      tg.BackButton.onClick(() => navigate('/token-tasks'));
     }
     return () => {
-      if (tg) {
+      if (tg && tg.BackButton) {
         tg.BackButton.offClick();
       }
     };
   }, [tg, navigate]);
 
-  // Здесь вы можете загрузить данные о задании на основе tokenId
-  const taskData = {
-    name: 'REBA',
-    description: 'Ознакомтесь с токеном и получите вознаграждение в DMT токене. Не продавайте токены до аирдропа, иначе не получите награду',
-    reward: '100 REBA',
-    progress: '75 из 100',
-    progressNote: 'В этом задании ограниченное количество участников',
-    steps: [
-      { id: 1, description: 'Подписаться на канал Rebalancer' },
-      { id: 2, description: 'Купите минимум 5000 REBA' },
-    ],
+  const handleSubscribe = () => {
+    if (task) {
+      window.open(task.channelLink, '_blank');
+    }
   };
+
+  const handleBuyTokens = () => {
+    setMessage('Переход на страницу покупки токенов');
+  };
+
+  const handleCheckCompletion = async () => {
+    if (isTaskCompleted) {
+      setMessage('Вы уже выполнили это задание');
+      return;
+    }
+
+    if (task && user) {
+      const subscriptionStatus = await checkChannelSubscription(task.channelLink);
+      const tokenOwnershipStatus = await checkTokenOwnership(user.id, task.tokenAddress, task.requiredTokenAmount);
+
+      setIsSubscribed(subscriptionStatus);
+      setOwnsToken(tokenOwnershipStatus);
+
+      if (subscriptionStatus && tokenOwnershipStatus) {
+        const rewardAmount = Number(task.reward.split(' ')[0]);
+        addToBalance(rewardAmount);
+        
+        // Распределение реферальных наград
+        await distributeReferralRewards(user.id, rewardAmount);
+
+        setMessage(`Поздравляем! Вы выполнили задание и получили ${task.reward}!`);
+        setIsTaskCompleted(true);
+        setTimeout(() => navigate('/token-tasks'), 3000);
+      } else {
+        setMessage('Пожалуйста, выполните все шаги задания');
+      }
+    }
+  };
+
+  const checkChannelSubscription = async (channelLink: string) => {
+    // Здесь должна быть реальная логика проверки подписки на канал
+    return true;
+  };
+
+  if (!task) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <div className="token-task-detail">
-      <h1 className="task-name">{taskData.name}</h1>
-      <p className="task-description">{taskData.description}</p>
-      
+      <h1 className="task-name">{task.name}</h1>
+      <p className="task-description">{task.description}</p>
       <div className="info-card">
         <h2>Награда</h2>
-        <p className="reward">{taskData.reward}</p>
+        <p className="reward">{task.reward}</p>
       </div>
-      
       <div className="info-card">
         <h2>Выполнили</h2>
-        <p className="progress">{taskData.progress}</p>
-        <p className="progress-note">{taskData.progressNote}</p>
+        <p className="progress">? из {task.maxParticipants}</p>
+        <p className="progress-note">В этом задании ограниченное количество участников</p>
       </div>
-      
       <div className="info-card">
         <h2>Задание</h2>
-        {taskData.steps.map((step) => (
-          <div key={step.id} className="task-step">
-            <p>{`${step.id}. ${step.description}`}</p>
-            <span className="arrow">›</span>
-          </div>
-        ))}
+        <div className="task-step" onClick={handleSubscribe}>
+          <p>1. Подписаться на канал {task.name}</p>
+          {isSubscribed ? <span className="completed">✓</span> : <span className="arrow">›</span>}
+        </div>
+        <div className="task-step" onClick={handleBuyTokens}>
+          <p>2. Купите минимум {task.requiredTokenAmount} {task.name.split(' ')[0]}</p>
+          {ownsToken ? <span className="completed">✓</span> : <span className="arrow">›</span>}
+        </div>
       </div>
+      <button className="check-completion-button" onClick={handleCheckCompletion} disabled={isTaskCompleted}>
+        {isTaskCompleted ? 'Задание выполнено' : 'Проверить выполнение'}
+      </button>
+      {message && <div className="message">{message}</div>}
     </div>
   );
 };

@@ -7,12 +7,12 @@ interface ChannelTaskCardProps {
   reward: string;
   completed: boolean;
   link: string;
-  channelLink: string; // New prop for the channel link
-  onSubscribe: (id: number) => void; // New prop for handling subscription
+  channelLink: string;
+  onSubscribe: (id: number) => void;
 }
 
-const ChannelTaskCard: React.FC<ChannelTaskCardProps> = ({ 
-  id, name, reward, completed, link, channelLink, onSubscribe 
+const ChannelTaskCard: React.FC<ChannelTaskCardProps> = ({
+  id, name, reward, completed, link, channelLink, onSubscribe
 }) => {
   const navigate = useNavigate();
 

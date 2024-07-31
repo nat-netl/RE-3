@@ -1,90 +1,138 @@
 .academy-container {
-    background-color: #000000;
-    color: white;
-    padding: 20px;
-    min-height: 100vh;
+  background-color: #000000;
+  color: white;
+  padding: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.academy-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.explanation-content {
+  margin-bottom: 16px;
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.check-knowledge-button, .next-button {
+  background-color: #007AFF;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: auto;
+  transition: background-color 0.3s ease;
+}
+
+.check-knowledge-button:active, .next-button:active {
+  background-color: #0056b3;
+}
+
+.general-education {
+  padding: 12px;
+  margin-bottom: 16px;
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+}
+
+.question-card, .options-card {
+  background-color: #2C2C2C;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.question {
+  font-size: 16px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.option {
+  background-color: #3C3C3C;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px;
+  margin-bottom: 8px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.option:last-child {
+  margin-bottom: 0;
+}
+
+.option.selected {
+  background-color: #4C4C4C;
+}
+
+.option.correct {
+  background-color: #4CAF50;
+}
+
+.option.incorrect {
+  background-color: #F44336;
+}
+
+.answer-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (max-height: 600px) {
+  .academy-container {
+    padding: 12px;
   }
-  
+
   .academy-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 20px;
+    margin-bottom: 12px;
   }
-  
-  .explanation-content {
-    margin-bottom: 20px;
-    white-space: pre-line;
+
+  .explanation-content, .general-education {
+    font-size: 13px;
+    margin-bottom: 12px;
   }
-  
-  .check-knowledge-button {
-    background-color: #007AFF;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .general-education {
-    padding: 15px;
-    margin-bottom: 20px;
-    white-space: pre-line;
-  }
-  
+
   .question-card, .options-card {
-    background-color: #2C2C2C;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    padding: 10px;
+    margin-bottom: 12px;
   }
-  
+
   .question {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  
-  .option {
-    background-color: #3C3C3C;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
+    font-size: 15px;
     margin-bottom: 10px;
-    text-align: left;
-    cursor: pointer;
-    width: 100%;
-    position: relative;
-    transition: background-color 0.3s ease;
   }
-  
-  .option.selected {
-    background-color: #4C4C4C;
+
+  .option {
+    padding: 10px;
+    font-size: 13px;
   }
-  
-  .option.correct {
-    background-color: #4CAF50;
+
+  .check-knowledge-button, .next-button {
+    padding: 10px;
+    font-size: 15px;
   }
-  
-  .option.incorrect {
-    background-color: #F44336;
-  }
-  
-  .answer-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  .next-button {
-    background-color: #007AFF;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
-  }
+}

@@ -50,9 +50,6 @@ const TasksPage: React.FC = () => {
   return (
     <div className="tasks-container">
       <h1 className="tasks-title">Выполняйте задания и получайте токены</h1>
-      <div className="refresh-button">
-        <span>⟳</span>
-      </div>
       <div className="task-section" onClick={handleAcademyClick}>
         <div className="task-header">
           <h2 className="section-title">База – Академия REBA</h2>

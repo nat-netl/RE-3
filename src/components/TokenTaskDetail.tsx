@@ -87,9 +87,29 @@ const TokenTaskDetail: React.FC = () => {
     }
   };
 
-  const checkChannelSubscription = async (channelLink: string) => {
-    // Здесь должна быть реальная логика проверки подписки на канал
-    return true;
+  const checkChannelSubscription = async (channelUsername: string): Promise<boolean> => {
+    if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+      console.error('Telegram Web App is not properly initialized');
+      return false;
+    }
+  
+    try {
+      // Убедимся, что channelUsername начинается с '@'
+      const formattedChannelUsername = channelUsername.startsWith('@') ? channelUsername : `@${channelUsername}`;
+  
+      // Используем метод getChatMember для проверки статуса пользователя в канале
+      const chatMember = await tg.getChatMember(formattedChannelUsername);
+  
+      // Проверяем, является ли пользователь подписчиком, администратором или создателем канала
+      const isSubscribed = ['member', 'administrator', 'creator'].includes(chatMember.status);
+  
+      return isSubscribed;
+    } catch (error) {
+      console.error('Error checking channel subscription:', error);
+      
+      // Если произошла ошибка, предполагаем, что пользователь не подписан
+      return false;
+    }
   };
 
   if (!task) {

@@ -14,6 +14,7 @@ const AppContent: React.FC = () => {
   const { connected } = useTonConnect();
   const location = useLocation();
   const isOnboarding = location.pathname === '/' && !connected;
+  const showNavigationBar = !isOnboarding && location.pathname !== '/reba-academy';
 
   return (
     <div className={`app-container ${isOnboarding ? 'onboarding' : ''}`}>
@@ -31,7 +32,7 @@ const AppContent: React.FC = () => {
           <Route path="/token-task/:tokenId" element={<TokenTaskDetail />} />
         </Routes>
       </div>
-      {!isOnboarding && <NavigationBar />}
+      {showNavigationBar && <NavigationBar />}
     </div>
   );
 };

@@ -1,90 +1,98 @@
 .academy-container {
-    background-color: #000000;
-    color: white;
-    padding: 20px;
-    min-height: 100vh;
-  }
-  
-  .academy-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .explanation-content {
-    margin-bottom: 20px;
-    white-space: pre-line;
-  }
-  
-  .check-knowledge-button {
-    background-color: #007AFF;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .general-education {
-    padding: 15px;
-    margin-bottom: 20px;
-    white-space: pre-line;
-  }
-  
-  .question-card, .options-card {
-    background-color: #2C2C2C;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1.5px solid rgba(255, 255, 255, 0.12);
-  }
-  
-  .question {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  
-  .option {
-    background-color: #3C3C3C;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    text-align: left;
-    cursor: pointer;
-    width: 100%;
-    position: relative;
-    transition: background-color 0.3s ease;
-  }
-  
-  .option.selected {
-    background-color: #4C4C4C;
-  }
-  
-  .option.correct {
-    background-color: #4CAF50;
-  }
-  
-  .option.incorrect {
-    background-color: #F44336;
-  }
-  
-  .answer-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  .next-button {
-    background-color: #007AFF;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
-  }
+  background-color: #000000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.scrollable-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px 16px 80px; /* Добавлен нижний отступ для прокрутки */
+}
+
+.academy-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.explanation-content, .general-education {
+  margin-bottom: 16px;
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.question-card, .options-card {
+  background-color: #2C2C2C;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.question {
+  font-size: 16px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.option {
+  background-color: #3C3C3C;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px;
+  margin-bottom: 8px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.option:last-child {
+  margin-bottom: 0;
+}
+
+.option.selected {
+  background-color: #4C4C4C;
+}
+
+.option.correct {
+  background-color: #4CAF50;
+}
+
+.option.incorrect {
+  background-color: #F44336;
+}
+
+.answer-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.check-knowledge-button, .next-button {
+  background-color: #007AFF;
+  border: none;
+  color: white;
+  padding: 16px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.check-knowledge-button:active, .next-button:active {
+  background-color: #0056b3;
+}

@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://rntna-176-213-114-102.a.free.pinggy.link';

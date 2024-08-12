@@ -33,7 +33,7 @@ const MainMenu: React.FC = () => {
     //создание пользователя
     try {
       const response = await axios
-        .post(`${BASE_URL}/api/auth/register`, null, {
+        .post(`${BASE_URL}/api/auth/register`, {
           params: {
             telegramId: user?.id,
             username: user?.username,
@@ -42,6 +42,9 @@ const MainMenu: React.FC = () => {
             referredById: user?.id,
             walletAddress,
           },
+          headers: {
+            "X-Pinggy-No-Screen": "1"
+          }
         })
         .then((response) => console.log(response.data))
         .catch((err) => console.log(err));

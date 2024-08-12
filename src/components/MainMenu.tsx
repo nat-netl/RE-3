@@ -21,19 +21,22 @@ const MainMenu: React.FC = () => {
   const { fetchUser } = useActions();
   const [showNotification, setShowNotification] = useState(false);
   const { userData } = useTypeSelector((state) => state.user);
-  
+
   useEffect(() => {
     if (tg) {
       tg.BackButton.hide();
     }
   }, [tg]);
-  
+
   const addUser = async () => {
     const walletAddress = tonConnectUI.account?.address;
     //создание пользователя
     try {
       const response = await axios
         .post(`${BASE_URL}/api/auth/register`, {
+          headers: {
+            "X-Pinggy-No-Screen": "true",
+          },
           params: {
             telegramId: user?.id,
             username: user?.username,
@@ -42,15 +45,12 @@ const MainMenu: React.FC = () => {
             referredById: user?.id,
             walletAddress,
           },
-          headers: {
-            "X-Pinggy-No-Screen": "1"
-          }
         })
         .then((response) => console.log(response.data))
         .catch((err) => console.log(err));
-        
-        fetchUser (walletAddress)
-        return response;
+
+      fetchUser(walletAddress);
+      return response;
     } catch (error) {
       console.log("Error sending wallet data:", error);
     }
@@ -59,7 +59,7 @@ const MainMenu: React.FC = () => {
   useEffect(() => {
     if (connected) {
       console.log("Wallet connected successfully");
-      fetchUser (wallet?.address)
+      fetchUser(wallet?.address);
     }
   }, [connected]);
 

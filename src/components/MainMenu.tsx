@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTonConnect } from "../hooks/useTonConnect";
 import { useTelegram } from "../context/TelegramContext";
-import { useUserBalance } from "../hooks/useUserBalance";
 import { useTransactions } from "../hooks/useTransactions";
 import { referralLevels } from "../utils/referralSystem";
 import "../styles/MainMenu.css";
@@ -21,7 +20,7 @@ const MainMenu: React.FC = () => {
   const { transactions } = useTransactions();
   const { fetchUser } = useActions();
   const [showNotification, setShowNotification] = useState(false);
-  const { userData, loading } = useTypeSelector((state) => state.user);
+  const { userData } = useTypeSelector((state) => state.user);
   
   useEffect(() => {
     if (tg) {

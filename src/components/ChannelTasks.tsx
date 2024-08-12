@@ -8,8 +8,6 @@ import { useActions } from "../hooks/useActions";
 import { useTypeSelector } from "../hooks/useTypeSelector";
 import axios from "axios";
 import { BASE_URL } from "../constants/baseUrl";
-import { useTonConnect } from "../hooks/useTonConnect";
-import { useTonConnectUI } from "@tonconnect/ui-react";
 
 interface Channel {
   id: number;
@@ -26,8 +24,8 @@ const ChannelTasks: React.FC = () => {
   const user = JSON.parse(localStorage.getItem("user"))
   const { addTransaction } = useTransactions();
   const [message, setMessage] = useState<string | null>(null);
-  const { fetchTask, fetchUser } = useActions();
-  const { userData, loading: loadingUser } = useTypeSelector(
+  const { fetchTask } = useActions();
+  const { userData } = useTypeSelector(
     (state) => state.user
   );
   const { tasks, loading } = useTypeSelector((state) => state.tasks);

@@ -36,6 +36,12 @@ const MainMenu: React.FC = () => {
         .post(`${BASE_URL}/api/auth/register`, {
           headers: {
             "X-Pinggy-No-Screen": "true",
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "https://re-3.vercel.app/",
+            "Connection": "keep-alive",
+            "Content-Type": "application/json; charset=utf-8",
+            "X-Frame-Options": "SAMEORIGIN",
+            "X-Powered-By": "Express"
           },
           params: {
             telegramId: user?.id,

@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://rngch-176-213-114-102.a.free.pinggy.link/';
+export const BASE_URL = 'https://rngch-176-213-114-102.a.free.pinggy.link';

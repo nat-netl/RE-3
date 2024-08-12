@@ -1,10 +1,12 @@
-import { useTonConnectUI } from '@tonconnect/ui-react';
+import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import { useBalance } from '../context/BalanceContext';
 import { useEffect } from 'react';
 
 export function useTonConnect() {
   const [tonConnectUI] = useTonConnectUI();
   const { balance, updateBalance } = useBalance();
+  const  wallet = useTonWallet()
+  const address = useTonAddress();
 
   useEffect(() => {
     if (tonConnectUI.account?.balance) {
@@ -13,8 +15,10 @@ export function useTonConnect() {
   }, [tonConnectUI.account?.balance, updateBalance]);
 
   return {
+    name: wallet?.name,
     connected: tonConnectUI.connected,
     wallet: tonConnectUI.account,
+    walletAddress: address,
     balance: balance,
     connectWallet: async () => {
       if (tonConnectUI.connected) {

@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTelegram } from '../context/TelegramContext';
 import TokenTaskCard from '../card/TokenTaskCard';
 import { tokenTasks } from '../config/tokenTasks';
 import '../styles/TokenTasks.css';
+import { useActions } from '../hooks/useActions';
+import { useTypeSelector } from '../hooks/useTypeSelector';
 
 const TokenTasks: React.FC = () => {
   const { tg } = useTelegram();
   const navigate = useNavigate();
+  const { fetchTask } = useActions();
+  const { tasks } = useTypeSelector((state) => state.tasks);
+
+  useEffect(() => {
+    fetchTask("TOKEN");
+  }, []);
 
   React.useEffect(() => {
     if (tg && tg.BackButton) {
@@ -27,11 +35,11 @@ const TokenTasks: React.FC = () => {
         <h1>Задания по токенам</h1>
       </div>
       <div className="token-list">
-        {tokenTasks.map((task) => (
+        {tasks.map((task) => (
           <TokenTaskCard
             key={task.id}
             id={task.id}
-            name={task.name}
+            name={task.title}
             reward={task.reward}
             link={`/token-task/${task.id}`}
           />

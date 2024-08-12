@@ -19,7 +19,6 @@ export const TelegramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     const telegram = (window as any).Telegram.WebApp;
     setTg(telegram);
-
     if (telegram.initDataUnsafe && telegram.initDataUnsafe.user) {
       setUser({
         id: telegram.initDataUnsafe.user.id,

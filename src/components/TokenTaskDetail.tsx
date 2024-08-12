@@ -7,6 +7,9 @@ import { checkTokenOwnership } from '../utils/blockchain';
 import { tokenTasks, TokenTask } from '../config/tokenTasks';
 import { distributeReferralRewards } from '../utils/referralSystem';
 import '../styles/TokenTaskDetail.css';
+import { useTypeSelector } from '../hooks/useTypeSelector';
+import { useActions } from '../hooks/useActions';
+import { switchAddress } from '../config/tokenAddress';
 
 const TokenTaskDetail: React.FC = () => {
   const { tg, user } = useTelegram();
@@ -19,15 +22,23 @@ const TokenTaskDetail: React.FC = () => {
   const [ownsToken, setOwnsToken] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isTaskCompleted, setIsTaskCompleted] = useState(false);
+  ///////////////
+  const { tasks, loading } = useTypeSelector((state) => state.tasks);
+  const { fetchTask } = useActions();
 
   useEffect(() => {
-    const currentTask = tokenTasks.find(t => t.id === Number(tokenId));
+    fetchTask("CHANNEL");
+  }, []);
+
+  useEffect(() => {
+    const currentTask = tasks.find(t => t.id === Number(tokenId));
     if (currentTask) {
       setTask(currentTask);
     } else {
       navigate('/token-tasks');
     }
   }, [tokenId, navigate]);
+
 
   useEffect(() => {
     if (tg && tg.BackButton) {
@@ -43,7 +54,7 @@ const TokenTaskDetail: React.FC = () => {
 
   const handleSubscribe = () => {
     if (task) {
-      window.open(task.channelLink, '_blank');
+      window.open(`https://t.me/${task.channelUsername}`, '_blank');
     }
   };
 
@@ -58,14 +69,14 @@ const TokenTaskDetail: React.FC = () => {
     }
 
     if (task && user) {
-      const subscriptionStatus = await checkChannelSubscription(task.channelLink);
-      const tokenOwnershipStatus = await checkTokenOwnership(user.id, task.tokenAddress, task.requiredTokenAmount);
+      const subscriptionStatus = await checkChannelSubscription(`https://t.me/${task.channelUsername}`);
+      const tokenOwnershipStatus = await checkTokenOwnership(user.id, task.tokenAddress, task.tokenAmount);
 
       setIsSubscribed(subscriptionStatus);
       setOwnsToken(tokenOwnershipStatus);
 
       if (subscriptionStatus && tokenOwnershipStatus) {
-        const rewardAmount = Number(task.reward.split(' ')[0]);
+        const rewardAmount = Number(task.reward);
         addToBalance(rewardAmount);
         
         // Добавляем транзакцию
@@ -118,7 +129,7 @@ const TokenTaskDetail: React.FC = () => {
 
   return (
     <div className="token-task-detail">
-      <h1 className="task-name">{task.name}</h1>
+      <h1 className="task-name">{task.title}</h1>
       <p className="task-description">{task.description}</p>
       <div className="info-card">
         <h2>Награда</h2>
@@ -132,11 +143,11 @@ const TokenTaskDetail: React.FC = () => {
       <div className="info-card">
         <h2>Задание</h2>
         <div className="task-step" onClick={handleSubscribe}>
-          <p>1. Подписаться на канал {task.name}</p>
+          <p>1. Подписаться на канал {task.title}</p>
           {isSubscribed ? <span className="completed">✓</span> : <span className="arrow">›</span>}
         </div>
         <div className="task-step" onClick={handleBuyTokens}>
-          <p>2. Купите минимум {task.requiredTokenAmount} {task.name.split(' ')[0]}</p>
+          <p>2. Купите минимум {task.tokenAmount} {switchAddress(task.tokenAddress)}</p>
           {ownsToken ? <span className="completed">✓</span> : <span className="arrow">›</span>}
         </div>
       </div>

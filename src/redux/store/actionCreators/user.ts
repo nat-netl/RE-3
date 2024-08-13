@@ -11,13 +11,8 @@ export const fetchUser = (address: any) => {
         `${BASE_URL}/api/auth/user-by-address/${address}`,
         {
           headers: {
-            "X-Pinggy-No-Screen": "69420",
-            "Access-Control-Allow-Credentials": "true",
-            "Access-Control-Allow-Origin": "https://re-3.vercel.app/",
-            "Connection": "keep-alive",
-            "Content-Type": "application/json; charset=utf-8",
-            "X-Frame-Options": "SAMEORIGIN",
-            "X-Powered-By": "Express"
+            "X-Pinggy-No-Screen": 21212,
+            // 'Access-Name': 'ztrqZ1ArgXC'
           },
         }
       );
